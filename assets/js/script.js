@@ -91,6 +91,24 @@ window.onload = () => {
     var matriz = Array(row);// creando matriz y asignando longitud de filas
     var matriz_tmp = Array(row);// creando matriz temporal y asignando longitud de filas
 
+    var message = document.getElementsByClassName('message')[0];
+    var showMessage = (text)=>{
+        message.hidden = false;
+        message.innerText = text;
+        message.style.opacity = 1;
+        setTimeout(()=>{
+            let cont = 1;
+            let id = setInterval(()=>{
+                cont -= 0.05;
+                message.style.opacity = cont;
+                if(cont <= 0){
+                    message.hidden = true;
+                    clearInterval(id);
+                }
+            }, 100)
+        }, 2000);
+    }
+
     for (var i = 0; i < row; i++) {// asignado longitud de columnas a cada fila
         matriz[i] = Array(col);
         matriz_tmp[i] = Array(col);
@@ -99,6 +117,9 @@ window.onload = () => {
     var answer = confirm("¿Generar Células vivas aleatoriamente?");
     if(!answer){
         alert('Selecciona las células vivas y presiona enter. Puedes precionar la tecla espaciadora para reiniciar');
+        showMessage('Modo Selección Iniciado');
+    }else{
+        showMessage('Modo Aleatorio Iniciado');
     }
     var press = false;
     for (var i = 0; i < row; i++) {// asignando elementos a cada columna
@@ -155,6 +176,7 @@ window.onload = () => {
     window.addEventListener('keydown', (e)=>{
         if(e.keyCode == 13 && !press && !answer){
             press = true;
+            showMessage('Juego Iniciado');
             call();
         }else if(idInterval != 0 && e.keyCode == 32 && press){
             clearInterval(idInterval);
@@ -162,7 +184,7 @@ window.onload = () => {
             joinMatriz(matriz, matriz_tmp);
             setColor(matriz);
             press = false;
-            alert('El juego se ha reiniciado!');
+            showMessage('Juego Reiniciado!');
         }
     })
 
