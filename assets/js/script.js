@@ -106,7 +106,7 @@ window.onload = () => {
                     clearInterval(id);
                 }
             }, 100)
-        }, 2000);
+        }, 1000);
     }
 
     for (var i = 0; i < row; i++) {// asignado longitud de columnas a cada fila
