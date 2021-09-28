@@ -2,7 +2,7 @@ const row = 20;
 const col = 40;
 
 function setColor(matriz) {
-    for (var i = 0; i < row; i++) {// cambiando el color de las celulas
+    for (var i = 0; i < row; i++) {// cambiando el color de las células
         for (var k = 0; k < col; k++) {
             matriz[i][k].className = matriz[i][k].getAttribute('data-cell') == '0' ? 'cell' : 'cell bg-color';
         }
@@ -96,18 +96,18 @@ window.onload = () => {
         matriz_tmp[i] = Array(col);
     }
 
-    var answer = confirm("¿Generar Celulas vivas aleatoriamente?");
+    var answer = confirm("¿Generar Células vivas aleatoriamente?");
     if(!answer){
-        alert('Selecciona las celulas vivas y presiona enter.')
+        alert('Selecciona las células vivas y presiona enter.')
     }
     var press = false;
     for (var i = 0; i < row; i++) {// asignando elementos a cada columna
         for (var k = 0; k < col; k++) {
             matriz[i][k] = celdas[cont++];
             if(answer){
-                matriz_tmp[i][k] = getRandom() ? 1 : 0;// asignando celulas vivas o muertas aleatoriamente
+                matriz_tmp[i][k] = getRandom() ? 1 : 0;// asignando células vivas o muertas aleatoriamente
             }else{
-                matriz_tmp[i][k] = 0;// asignando celulas vivas o muertas aleatoriamente
+                matriz_tmp[i][k] = 0;// asignando células vivas o muertas aleatoriamente
             }
 
             if(!answer){
@@ -127,11 +127,11 @@ window.onload = () => {
         setInterval(() => {
             for (var i = 0; i < row; i++) {
                 for (var k = 0; k < col; k++) {
-                    if (matriz[i][k].getAttribute('data-cell') == 0) {// analizando las celulas muertas
-                        if (getCanCell(i, k, matriz) == 3) {// si hay 3 celulas vivas vecinas entonces vive
+                    if (matriz[i][k].getAttribute('data-cell') == 0) {// analizando las células muertas
+                        if (getCanCell(i, k, matriz) == 3) {// si hay 3 células vivas vecinas entonces vive
                             matriz_tmp[i][k] = 1;
                         }
-                    } else if (matriz[i][k].getAttribute('data-cell') == 1) {// analizando las celulas vivas
+                    } else if (matriz[i][k].getAttribute('data-cell') == 1) {// analizando las células vivas
                         let cellLife = getCanCell(i, k, matriz);
                         if (cellLife < 2) {// si una celula viva tiene menos 2 vecinos vivos, entonces muere
                             matriz_tmp[i][k] = 0;
