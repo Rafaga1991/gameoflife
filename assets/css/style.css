@@ -18,16 +18,6 @@ table, td, tr{
     border: 1px solid black;
 }
 
-.celda{
-    text-align: center;
-}
-
-.bg-black{
+.bg-color{
     background-color: black;
-    color: black;
-}
-
-.bg-white{
-    background-color: white;
-    color: white;
 }

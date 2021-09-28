@@ -4,7 +4,7 @@ const col = 40;
 function setColor(matriz) {
     for (var i = 0; i < row; i++) {// cambiando el color de las celulas
         for (var k = 0; k < col; k++) {
-            matriz[i][k].className = matriz[i][k].innerHTML == '0' ? 'celda bg-white' : 'celda bg-black';
+            matriz[i][k].className = matriz[i][k].getAttribute('data-cell') == '0' ? 'cell' : 'cell bg-color';
         }
     }
 }
@@ -13,54 +13,58 @@ function getCanCell(r, c, matriz, cellType = 1) {
     let cont = 0;
 
     if (c > 0) {
-        if (matriz[r][c - 1].innerText == cellType) {
+        if (matriz[r][c - 1].getAttribute('data-cell') == cellType) {
             cont++;
         }
     }
 
     if (c < (col - 1)) {
-        if (matriz[r][c + 1].innerText == cellType) {
+        if (matriz[r][c + 1].getAttribute('data-cell') == cellType) {
             cont++;
         }
     }
 
     if (r > 0) {
-        if (matriz[r - 1][c].innerText == cellType) {
+        if (matriz[r - 1][c].getAttribute('data-cell') == cellType) {
             cont++;
         }
     }
 
     if (r > 0 && c > 0) {
-        if (matriz[r - 1][c - 1].innerText == cellType) {
+        if (matriz[r - 1][c - 1].getAttribute('data-cell') == cellType) {
             cont++;
         }
     }
 
     if (r > 0 && c < (col - 1)) {
-        if (matriz[r - 1][c + 1].innerText == cellType) {
+        if (matriz[r - 1][c + 1].getAttribute('data-cell') == cellType) {
             cont++;
         }
     }
 
     if (r < (row - 1) && c > 0) {
-        if (matriz[r + 1][c - 1].innerText == cellType) {
+        if (matriz[r + 1][c - 1].getAttribute('data-cell') == cellType) {
             cont++;
         }
     }
 
     if (r < (row - 1) && c < (col - 1)) {
-        if (matriz[r + 1][c + 1].innerText == cellType) {
+        if (matriz[r + 1][c + 1].getAttribute('data-cell') == cellType) {
             cont++;
         }
     }
 
     if (r < (row - 1)) {
-        if (matriz[r + 1][c].innerText == cellType) {
+        if (matriz[r + 1][c].getAttribute('data-cell') == cellType) {
             cont++;
         }
     }
 
     return cont;
+}
+
+function getRandom(){
+    return Math.floor(Math.random() * (10 - 1) + 1)%2;
 }
 
 function clearMatriz(matriz) {
@@ -74,7 +78,7 @@ function clearMatriz(matriz) {
 function joinMatriz(matriz, matriz_tmp) {
     for (var i = 0; i < row; i++) {
         for (var j = 0; j < col; j++) {
-            matriz[i][j].innerText = matriz_tmp[i][j];
+            matriz[i][j].setAttribute('data-cell', matriz_tmp[i][j]);
         }
     }
 }
@@ -83,7 +87,7 @@ window.onload = () => {
 
     let cont = 0;
 
-    var celdas = document.getElementsByClassName('celda');
+    var celdas = document.getElementsByClassName('cell');
     var matriz = Array(row);// creando matriz y asignando longitud de filas
     var matriz_tmp = Array(row);// creando matriz temporal y asignando longitud de filas
 
@@ -95,7 +99,7 @@ window.onload = () => {
     for (var i = 0; i < row; i++) {// asignando elementos a cada columna
         for (var k = 0; k < col; k++) {
             matriz[i][k] = celdas[cont++];
-            matriz_tmp[i][k] = 0;
+            matriz_tmp[i][k] = getRandom() ? 1 : 0;// asignando celulas vivas o muertas aleatoriamente
         }
     }
 
@@ -104,11 +108,11 @@ window.onload = () => {
     setInterval(() => {
         for (var i = 0; i < row; i++) {
             for (var k = 0; k < col; k++) {
-                if (matriz[i][k].innerText == 0) {// analizando las celulas muertas
+                if (matriz[i][k].getAttribute('data-cell') == 0) {// analizando las celulas muertas
                     if (getCanCell(i, k, matriz) == 3) {// si hay 3 celulas vivas vecinas entonces vive
                         matriz_tmp[i][k] = 1;
                     }
-                } else if (matriz[i][k].innerText == 1) {// analizando las celulas vivas
+                } else if (matriz[i][k].getAttribute('data-cell') == 1) {// analizando las celulas vivas
                     let cellLife = getCanCell(i, k, matriz);
                     if (cellLife < 2) {// si una celula viva tiene menos 2 vecinos vivos, entonces muere
                         matriz_tmp[i][k] = 0;
@@ -123,5 +127,5 @@ window.onload = () => {
         joinMatriz(matriz, matriz_tmp);// uniendo la matriz con la matriz temporal
         clearMatriz(matriz_tmp);// limpiando matriz temporal
         setColor(matriz);// insertando color de matriz
-    }, 500)
+    }, 400)
 }
