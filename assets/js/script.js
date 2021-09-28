@@ -96,36 +96,68 @@ window.onload = () => {
         matriz_tmp[i] = Array(col);
     }
 
+    var answer = confirm("¿Generar Celulas vivas aleatoriamente?");
+    if(!answer){
+        alert('Selecciona las celulas vivas y presiona enter.')
+    }
+    var press = false;
     for (var i = 0; i < row; i++) {// asignando elementos a cada columna
         for (var k = 0; k < col; k++) {
             matriz[i][k] = celdas[cont++];
-            matriz_tmp[i][k] = getRandom() ? 1 : 0;// asignando celulas vivas o muertas aleatoriamente
+            if(answer){
+                matriz_tmp[i][k] = getRandom() ? 1 : 0;// asignando celulas vivas o muertas aleatoriamente
+            }else{
+                matriz_tmp[i][k] = 0;// asignando celulas vivas o muertas aleatoriamente
+            }
+
+            if(!answer){
+                matriz[i][k].onclick = (e)=>{
+                    if(!press){
+                        e.target.setAttribute('data-cell', 1);
+                        setColor(matriz);
+                    }
+                }
+            }
         }
     }
 
     setColor(matriz);
 
-    setInterval(() => {
-        for (var i = 0; i < row; i++) {
-            for (var k = 0; k < col; k++) {
-                if (matriz[i][k].getAttribute('data-cell') == 0) {// analizando las celulas muertas
-                    if (getCanCell(i, k, matriz) == 3) {// si hay 3 celulas vivas vecinas entonces vive
-                        matriz_tmp[i][k] = 1;
-                    }
-                } else if (matriz[i][k].getAttribute('data-cell') == 1) {// analizando las celulas vivas
-                    let cellLife = getCanCell(i, k, matriz);
-                    if (cellLife < 2) {// si una celula viva tiene menos 2 vecinos vivos, entonces muere
-                        matriz_tmp[i][k] = 0;
-                    } else if (cellLife >= 2 && cellLife <= 3) {// si una celula viva tiene 2 a 3 vecinos vivos, entonces vive
-                        matriz_tmp[i][k] = 1;
-                    } else if (cellLife > 3) {// si una celula viva tiene más de 3 vecinos vivos, entonces muere.
-                        matriz_tmp[i][k] = 0;
+    var call = ()=>{
+        setInterval(() => {
+            for (var i = 0; i < row; i++) {
+                for (var k = 0; k < col; k++) {
+                    if (matriz[i][k].getAttribute('data-cell') == 0) {// analizando las celulas muertas
+                        if (getCanCell(i, k, matriz) == 3) {// si hay 3 celulas vivas vecinas entonces vive
+                            matriz_tmp[i][k] = 1;
+                        }
+                    } else if (matriz[i][k].getAttribute('data-cell') == 1) {// analizando las celulas vivas
+                        let cellLife = getCanCell(i, k, matriz);
+                        if (cellLife < 2) {// si una celula viva tiene menos 2 vecinos vivos, entonces muere
+                            matriz_tmp[i][k] = 0;
+                        } else if (cellLife >= 2 && cellLife <= 3) {// si una celula viva tiene 2 a 3 vecinos vivos, entonces vive
+                            matriz_tmp[i][k] = 1;
+                        } else if (cellLife > 3) {// si una celula viva tiene más de 3 vecinos vivos, entonces muere.
+                            matriz_tmp[i][k] = 0;
+                        }
                     }
                 }
             }
+            joinMatriz(matriz, matriz_tmp);// uniendo la matriz con la matriz temporal
+            clearMatriz(matriz_tmp);// limpiando matriz temporal
+            setColor(matriz);// insertando color de matriz
+        }, 400)
+    }
+
+    press = false;
+    window.addEventListener('keydown', (e)=>{
+        if(e.keyCode == 13 && !press && !answer){
+            press = true;
+            call();
         }
-        joinMatriz(matriz, matriz_tmp);// uniendo la matriz con la matriz temporal
-        clearMatriz(matriz_tmp);// limpiando matriz temporal
-        setColor(matriz);// insertando color de matriz
-    }, 400)
+    })
+
+    if(answer){
+        call();
+    }
 }
