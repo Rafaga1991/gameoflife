@@ -107,13 +107,14 @@ window.onload = () => {
             if(answer){
                 matriz_tmp[i][k] = getRandom() ? 1 : 0;// asignando células vivas o muertas aleatoriamente
             }else{
-                matriz_tmp[i][k] = 0;// asignando células vivas o muertas aleatoriamente
-            }
-
-            if(!answer){
-                matriz[i][k].onclick = (e)=>{
+                matriz_tmp[i][k] = 0;// asignando células muertas
+                matriz[i][k].onclick = (e)=>{// asignando evento de click a células
                     if(!press){
-                        e.target.setAttribute('data-cell', 1);
+                        if(e.target.getAttribute('data-cell') == 0){
+                            e.target.setAttribute('data-cell', 1);
+                        }else{
+                            e.target.setAttribute('data-cell', 0);
+                        }
                         setColor(matriz);
                     }
                 }
