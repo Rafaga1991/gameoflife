@@ -98,7 +98,7 @@ window.onload = () => {
 
     var answer = confirm("¿Generar Células vivas aleatoriamente?");
     if(!answer){
-        alert('Selecciona las células vivas y presiona enter.')
+        alert('Selecciona las células vivas y presiona enter. Puedes precionar la tecla espaciadora para reiniciar');
     }
     var press = false;
     for (var i = 0; i < row; i++) {// asignando elementos a cada columna
@@ -123,8 +123,9 @@ window.onload = () => {
 
     setColor(matriz);
 
+    let idInterval = 0;
     var call = ()=>{
-        setInterval(() => {
+        idInterval = setInterval(() => {
             for (var i = 0; i < row; i++) {
                 for (var k = 0; k < col; k++) {
                     if (matriz[i][k].getAttribute('data-cell') == 0) {// analizando las células muertas
@@ -154,6 +155,12 @@ window.onload = () => {
         if(e.keyCode == 13 && !press && !answer){
             press = true;
             call();
+        }else if(idInterval != 0 && e.keyCode == 32 && press){
+            clearInterval(idInterval);
+            clearMatriz(matriz_tmp);
+            joinMatriz(matriz, matriz_tmp);
+            setColor(matriz);
+            press = false;
         }
     })
 
