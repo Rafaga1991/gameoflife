@@ -162,6 +162,7 @@ window.onload = () => {
             joinMatriz(matriz, matriz_tmp);
             setColor(matriz);
             press = false;
+            alert('El juego se ha reiniciado!');
         }
     })
 
