@@ -84,7 +84,7 @@ function joinMatriz(matriz, matriz_tmp) {
 }
 
 window.onload = () => {
-
+    let idInterval = 0;
     let cont = 0;
 
     var celdas = document.getElementsByClassName('cell');
@@ -116,7 +116,7 @@ window.onload = () => {
 
     var answer = confirm("¿Generar Células vivas aleatoriamente?");
     if(!answer){
-        alert('Selecciona las células vivas y presiona enter. Puedes precionar la tecla espaciadora para reiniciar');
+        alert('Selecciona las células vivas y presiona enter. Puedes presionar la tecla espaciadora para reiniciar');
         showMessage('Modo Selección Iniciado');
     }else{
         showMessage('Modo Aleatorio Iniciado');
@@ -137,6 +137,8 @@ window.onload = () => {
                             e.target.setAttribute('data-cell', 0);
                         }
                         setColor(matriz);
+                    }else if(idInterval != 0){
+                        showMessage('Primero Reinicia el Juego');
                     }
                 }
             }
@@ -145,7 +147,6 @@ window.onload = () => {
 
     setColor(matriz);
 
-    let idInterval = 0;
     var call = ()=>{
         idInterval = setInterval(() => {
             for (var i = 0; i < row; i++) {
